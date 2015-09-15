@@ -1,6 +1,6 @@
 “””
-	#!/usr/bin/python
-	>>>conversion(1)
+	
+	>>> conversion(1)
 	33.8
 
 “””
