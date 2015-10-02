@@ -7,6 +7,7 @@
 
 import datetime as dt
 import random
+import pdb
 
 class Whale:
 	def __init__(self, name, sex):
@@ -16,6 +17,7 @@ class Whale:
 		print 'A ' + str(self.sex) + ' whale named ' + str(self.name) + ' is born!!!!!! ' + str(dt.datetime.now() - self.life)
 
 	def age(self):
+		#pdb.set_trace()
 		self.age = dt.datetime.now() - self.life
 		return self.age
 
