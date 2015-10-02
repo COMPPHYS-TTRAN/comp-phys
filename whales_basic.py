@@ -14,12 +14,12 @@ class Whale:
 		self.name = name
 		self.sex = sex
 		self.life = dt.datetime.now()
+		self.age = dt.datetime.now() - self.life
 		print 'A ' + str(self.sex) + ' whale named ' + str(self.name) + ' is born!!!!!! ' + str(dt.datetime.now() - self.life)
 
-	def age(self):
+	def age(self, age):
 		#pdb.set_trace()
-		self.age = dt.datetime.now() - self.life
-		return self.age
+		return age
 
 	def __str__(self):
 		return 'A ' + str(self.sex) + ' whale named ' + str(self.name) + ' is born!!!!!! ' + str(dt.datetime.now() - self.life)
