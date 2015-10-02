@@ -1,3 +1,10 @@
+'''
+#HW04
+#Terry Tran
+#Partner: Jacob Baca
+
+'''
+
 airports = {"DCA": "Washington, D.C.", "IAD": "Dulles", "LHR": "London=Heathrow", \
            "SVO": "Moscow", "CDA": "Chicago-Midway", "SBA": "Santa Barbara", \
            "LAX": "Los Angeles", "JFK": "New York City", "MIA": "Miami", "AUM": "Austin, Minnesota"}
