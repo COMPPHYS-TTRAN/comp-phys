@@ -213,59 +213,100 @@ def creation(mother, father):
     else:
         return 'NO BABIES.'
         
-Terrence = Dolphins('Terrence', 'boy', 'Laura', 'Si')
-Tyrone = Dolphins('Tyrone', 'boy', 'Karen', 'Smith')
-Terry = Dolphins('Terry', 'girl', 'Loan', 'Yes')
-Tina = Dolphins('Tina', 'girl', 'Linda', 'Bob')
-boy_alive.append(Terrence)
-boy_alive.append(Tyrone)
-girl_alive.append(Terry)
-girl_alive.append(Tina)
+
 #print 'jello'
     
 def main():
+    
+    dolphin_trials = []
+
     for t in range(1, 11):
+    
+        boy_alive,girl_alive = [],[]
+
+        Terrence = Dolphins('Terrence', 'boy', 'Laura', 'Si')
+        Tyrone = Dolphins('Tyrone', 'boy', 'Karen', 'Smith')
+        Terry = Dolphins('Terry', 'girl', 'Loan', 'Yes')
+        Tina = Dolphins('Tina', 'girl', 'Linda', 'Bob')
+        boy_alive.append(Terrence)
+        boy_alive.append(Tyrone)
+        girl_alive.append(Terry)
+        girl_alive.append(Tina)
+
         print 'Trial No. ', t
         live_dolphins = 4
+        dolphin_data = []
+        
+
+        mbreeding, fbreeding = [],[]
+
         for years in range(151): #iterate 150 years
-                #needs "official documents" in this one
-                #generator needs to come before male/female nested loop
-                #years will automatically update--does not need to do that here
+            br = len(mbreeding) + len(fbreeding)
+            #needs "official documents" in this one
+            #generator needs to come before male/female nested loop
+            #years will automatically update--does not need to do that here
             if years == int(25):
-                print 'Entering year 25 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 25 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
             if years == int(50):
-                print 'Entering year 50 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 50 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
             if years == int(75):
-                print 'Entering year 75 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 75 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
             if years == int(100):
-                print 'Entering year 100 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 100 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
             if years == int(125):
-                print 'Entering year 125 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 125 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
             if years == int(150):
-                print 'Entering year 150 with ', live_dolphins, ' dolphins, with 0 breeding.'
+                print 'Entering year 150 with ', live_dolphins, ' dolphins, with ', br, ' breeding.'
+	
+            m_to_remove = []
+            bloop = []
+            index = 0
 
             for male in boy_alive:
                 male.update()
                 if male.dead() == True:
                     live_dolphins -= 1
-                    boy_alive.remove(male)
+                    #boy_alive.remove(male)
+                    m_to_remove.append(index)
                     #live_dolphins -= 1
                     #return boy_alive
                     #return live_dolphins
+                if male.age > 8 and male.banged > 5:
+                    bloop.append(male)
+                index += 1
+
+            m_to_remove.reverse()
+            for element in m_to_remove:
+                del(boy_alive[element])
+
+            f_to_remove = []
+            gloop = []
+            index = 0
 
             for female in girl_alive:
                 female.update()
                 if female.dead() == True:
                     live_dolphins -= 1
-                    girl_alive.remove(female)
+                    #girl_alive.remove(female)
+                    f_to_remove.append(index)
                     #return girl_alive
                     #return live_dolphins
+                if female.age > 8 and female.banged > 5:
+                    gloop.append(female)
+                index += 1
+            
+            f_to_remove.reverse()
+            for element in f_to_remove:
+                del(girl_alive[element])
 
-            for male in boy_alive: #nested for loop max coupling
+            mbreeding = []
+            fbreeding = []
+
+            for male in bloop: #nested for loop max coupling
                 #pdb.set_trace()
                 #when finished with girl loop, will go back up here
 
-                for female in girl_alive:
+                for female in gloop:
                         #class in this loop
                         #now that you have couple, 
                         #creation happens
@@ -275,13 +316,25 @@ def main():
 
                         #print male.name, female.name
                         #print male.age, female.age
-                        baby = creation(female, male)
+                        if ( female not in fbreeding ) & ( male not in mbreeding):
 
-                        if isinstance(baby, Dolphins):
-                            if baby.sex == 'girl':
-                                girl_alive.append(baby)
-                            if baby.sex == 'boy':
-                                boy_alive.append(baby) 
-                            live_dolphins += 1   
+                            baby = creation(female, male)
+
+                            if isinstance(baby, Dolphins):
+
+                                mbreeding.append(male)
+                                fbreeding.append(female)
+
+                                if baby.sex == 'girl':
+                                    girl_alive.append(baby)
+                                if baby.sex == 'boy':
+                                    boy_alive.append(baby) 
+                                live_dolphins += 1
+                                break
+
+            dolphin_data.append(live_dolphins)
+
+        dolphin_trials.append(dolphin_data)
+
 main()
                           
