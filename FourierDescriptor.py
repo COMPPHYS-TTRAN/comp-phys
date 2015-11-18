@@ -30,6 +30,7 @@ def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, 
         plt.figure()
         plt.title('Original Shape')
         plt.imshow(im, cmap = plt.cm.gray)
+	plt.show()
 
     # Note: by convention, in this case, y values comes from the 0th index.
     # Otherwise one has to transpose the image and the contour will appear sideways 
@@ -52,9 +53,10 @@ def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, 
     # tranpose operation (an oddity, I admit...)
     CS = plt.contour(X, Y, im, 1)
     levels = CS.levels
+    plt.show()
     print 'contour level', levels
-    #if not plot_contour:
-    #    plt.close()
+    if not plot_contour:
+        plt.close()
 
     cs_paths = CS.collections[0].get_paths()
 
@@ -69,6 +71,7 @@ def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, 
         plt.figure()
         plt.title("Verify the contour points are correct")
         plt.scatter(x_arr, y_arr)
+	plt.show()
 
     return x_arr, y_arr
  
@@ -89,6 +92,7 @@ def FD(x, y, plot_FD = False, y_lim = None):
         plt.title('FD real and imag')
         plt.plot(Z.real, 'b-')
         plt.plot(Z.imag, 'g-')
+	plt.show()
         if y_lim != None:
             plt.ylim([-y_lim, y_lim])
 
@@ -144,12 +148,31 @@ def recover_shape(Z):
 def size_norm(Z):
     return Z/np.sqrt( np.abs(Z[1])*np.abs(Z[-1]) )
 
-x1, y1 = extract_shape('number1.png', blowup = 1., plot_img = True, plot_contour = True, plot_contour_pts = True)
-Z = FD(x1, y1, plot_FD = True, y_lim = None)
+'''#######################################################################'''
+
+#x1, y1 = extract_shape('number1.png', blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
+#Z = FD(x1, y1, plot_FD = False, y_lim = None)
+#Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
+#fd_mag, x1_rec, y1_rec = get_FD_abs(x1, y1, order = 10, norm = False, no_zeroth = False)
+#x1_rec, y1_rec = recover_shape(Z)
+#size_norm = size_norm(Z)
+
+#x2, y2 = extract_shape('number2.png', blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
+#Z = FD(x2, y2, plot_FD = False, y_lim = None)
+#Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
+#fd_mag, x2_rec, y2_rec = get_FD_abs(x2, y2, order = 10, norm = False, no_zeroth = False)
+#x2_rec, y2_rec = recover_shape(Z)
+#size_norm = size_norm(Z)
+
+x6, y6 = extract_shape('number6.png', blowup = 1., plot_img = True, plot_contour = True, plot_contour_pts = True)
+Z = FD(x6, y6, plot_FD = False, y_lim = None)
 Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
-fd_mag, x1_rec, y1_rec = get_FD_abs(x1, y1, order = 10, norm = False, no_zeroth = False)
-x1_rec, y1_rec = recover_shape(Z)
+fd_mag, x6_rec, y6_rec = get_FD_abs(x6, y6, order = 10, norm = False, no_zeroth = False)
+x6_rec, y6_rec = recover_shape(Z)
 size_norm = size_norm(Z)
+
+
+'''#######################################################################'''
 
 
 #parser = argparse.ArgumentParser(description = 'Keep this many terms. '
