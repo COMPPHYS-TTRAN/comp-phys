@@ -1,4 +1,11 @@
 '''
+Name: Terry Tran
+Lab Partner: Jacob Baca
+
+Zach,
+Haven't gotten argparse to work yet, or graphed the three numbers together…
+-Terry
+
 extract_shape(im_file, blowup = 1., plot_img = False, \
 plot_contour = False, plot_contour_pts = False)
 
