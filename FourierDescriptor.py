@@ -53,8 +53,8 @@ def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, 
     CS = plt.contour(X, Y, im, 1)
     levels = CS.levels
     print 'contour level', levels
-    if not plot_contour:
-        plt.close()
+    #if not plot_contour:
+    #    plt.close()
 
     cs_paths = CS.collections[0].get_paths()
 
@@ -96,15 +96,15 @@ def FD(x, y, plot_FD = False, y_lim = None):
 
 '''#######################################################################'''
 
-def filt_FD(Z, n_keep, no_zeroth = True):
+def filt_FD(Z, order = 10, no_zeroth = True):
     N = len(Z)
     n = np.arange(len(Z))
     print 'Nyquist index', N/2
     # in case I want the centroid position.
     filt0 = n > 0 if no_zeroth else 1
-    filt1 = filt0*(n <= n_keep)
+    filt1 = filt0*(n <= order)
     
-    filt2 = (n > ((N-1) - n_keep))
+    filt2 = (n > ((N-1) - order))
     print 'Number of components from both sides:', filt1.sum(), filt2.sum()
     filt = filt1 + filt2
     #print Z.real[N/2]
@@ -144,6 +144,14 @@ def recover_shape(Z):
 def size_norm(Z):
     return Z/np.sqrt( np.abs(Z[1])*np.abs(Z[-1]) )
 
+x1, y1 = extract_shape('number1.png', blowup = 1., plot_img = True, plot_contour = True, plot_contour_pts = True)
+Z = FD(x1, y1, plot_FD = True, y_lim = None)
+Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
+fd_mag, x1_rec, y1_rec = get_FD_abs(x1, y1, order = 10, norm = False, no_zeroth = False)
+x1_rec, y1_rec = recover_shape(Z)
+size_norm = size_norm(Z)
 
-parser = argparse.ArgumentParser(description = 'Keep this many terms. '
-parser.add_argument('order', metavar='O', type=int, nargs='+',help='an integer for order')
+
+#parser = argparse.ArgumentParser(description = 'Keep this many terms. '
+#parser.add_argument('order', metavar='O', type=int, nargs='+',help='an integer for order')
+#args = parser.parse_args('order', '10')
