@@ -1,11 +1,4 @@
 '''
-Name: Terry Tran
-Lab Partner: Jacob Baca
-
-Zach,
-Haven't gotten argparse to work yet, or graphed the three numbers together…
--Terry
-
 extract_shape(im_file, blowup = 1., plot_img = False, \
 plot_contour = False, plot_contour_pts = False)
 
@@ -25,6 +18,10 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import argparse 
 import pdb
+
+order = 10
+norm = False
+no_zeroth = False
 
 def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, plot_contour_pts = False):
     
@@ -60,7 +57,7 @@ def extract_shape(im_file, blowup = 1., plot_img = False, plot_contour = False, 
     # tranpose operation (an oddity, I admit...)
     CS = plt.contour(X, Y, im, 1)
     levels = CS.levels
-    plt.show()
+    #plt.show()
     print 'contour level', levels
     if not plot_contour:
         plt.close()
@@ -107,7 +104,7 @@ def FD(x, y, plot_FD = False, y_lim = None):
 
 '''#######################################################################'''
 
-def filt_FD(Z, order = 10, no_zeroth = True):
+def filt_FD(Z, order = 10, no_zeroth = False):
     N = len(Z)
     n = np.arange(len(Z))
     print 'Nyquist index', N/2
@@ -123,7 +120,7 @@ def filt_FD(Z, order = 10, no_zeroth = True):
 
 '''#######################################################################'''
 
-def get_FD_abs(x, y, order = 10, norm = True, no_zeroth = True):
+def get_FD_abs(x, y, order = 10, norm = True, no_zeroth = False):
     '''Finds the Fourier Descriptors and the recovered x and y for a shape.'''
     Z = FD(x, y)
     print 'len(Z)', len(Z)
@@ -157,31 +154,90 @@ def size_norm(Z):
 
 '''#######################################################################'''
 
-#x1, y1 = extract_shape('number1.png', blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
-#Z = FD(x1, y1, plot_FD = False, y_lim = None)
-#Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
-#fd_mag, x1_rec, y1_rec = get_FD_abs(x1, y1, order = 10, norm = False, no_zeroth = False)
+x1, y1 = extract_shape('number1.png') #blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
+Z = FD(x1, y1, plot_FD = False, y_lim = None)
+Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
+x1_rec = []
+y1_rec = []
+fd1_mag = []
+for n in range(len(x1)):
+    fd_mag1, x_rec1, y_rec1 = get_FD_abs(x1, y1, order = 10, norm = False, no_zeroth = False)
+    x1_rec.append(x_rec1)
+    y1_rec.append(y_rec1)
+    fd1_mag.append(fd_mag1)
 #x1_rec, y1_rec = recover_shape(Z)
 #size_norm = size_norm(Z)
 
-#x2, y2 = extract_shape('number2.png', blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
-#Z = FD(x2, y2, plot_FD = False, y_lim = None)
-#Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
-#fd_mag, x2_rec, y2_rec = get_FD_abs(x2, y2, order = 10, norm = False, no_zeroth = False)
+x2, y2 = extract_shape('number2.png') #blowup = 1., plot_img = True, plot_contour = True, #plot_contour_pts = True)
+Z = FD(x2, y2, plot_FD = False, y_lim = None)
+Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
+x2_rec = []
+y2_rec = []
+fd2_mag = []
+for n in range(len(x2)):
+    fd_mag2, x_rec2, y_rec2 = get_FD_abs(x2, y2, order = 10, norm = False, no_zeroth = False)
+    x2_rec.append(x_rec2)
+    y2_rec.append(y_rec2)
+    fd2_mag.append(fd_mag2)    
 #x2_rec, y2_rec = recover_shape(Z)
 #size_norm = size_norm(Z)
-
-x6, y6 = extract_shape('number6.png', blowup = 1., plot_img = True, plot_contour = True, plot_contour_pts = True)
+   
+x6, y6 = extract_shape('number6.png') #blowup = 1., plot_img = True, plot_contour = True, plot_contour_pts = True)
 Z = FD(x6, y6, plot_FD = False, y_lim = None)
 Zfilt = filt_FD(Z, order = 10, no_zeroth = True) #N_KEEP LIST HERE AS 10 IS THE ARGPARSE ORDER
-fd_mag, x6_rec, y6_rec = get_FD_abs(x6, y6, order = 10, norm = False, no_zeroth = False)
-x6_rec, y6_rec = recover_shape(Z)
-size_norm = size_norm(Z)
+x6_rec = []
+y6_rec = []
+fd6_mag = []
+for n in range(len(x2)):
+    fd_mag6, x_rec6, y_rec6 = get_FD_abs(x6, y6, order = 10, norm = False, no_zeroth = False)
+    x6_rec.append(x_rec6)
+    y6_rec.append(y_rec6)
+    fd6_mag.append(fd_mag6)    
+#x6_rec, y6_rec = recover_shape(Z)
+#size_norm = size_norm(Z)
+
+'''#######################################################################'''
+
+plt.figure()
+for n in range(len(x1)):
+    plt.plot(x1_rec[n], y1_rec[n], 'b')
+
+for n in range(len(x2)):
+    plt.plot(x2_rec[n], y2_rec[n], 'g')
+
+for n in range(len(x6)):
+    plt.plot(x6_rec[n], y6_rec[n], 'r')
+
+plt.show()
+
+'''#######################################################################'''
+
+if no_zeroth == True:
+    start = 1
+else:
+    start = 2
+
+plt.figure()
+for n in range(len(x1)):
+    plt.plot(np.arange(2, 2*order), fd2_mag[n][start:-1], 'bo')
+
+for n in range(len(x2)):
+    plt.plot(np.arange(2, 2*order), fd2_mag[n][start:-1], 'gx')
+
+for n in range(len(x6)):
+    plt.plot(np.arange(2, 2*order), fd6_mag[n][start:-1], 'r8')
+
+plt.show()
 
 
 '''#######################################################################'''
 
 
-#parser = argparse.ArgumentParser(description = 'Keep this many terms. '
-#parser.add_argument('order', metavar='O', type=int, nargs='+',help='an integer for order')
-#args = parser.parse_args('order', '10')
+parser = argparse.ArgumentParser()
+parser.add_argument('-order', type = int)
+parser.add_argument('-norm', type = bool)parser.add_argument('-no_zeroth', type = bool)#parser.set_defaults(order = 10, no_zeroth = False, norm = False)
+args = parser.parse_args()
+order = args.order
+norm = args.norm
+no_zeroth = args.no_zeroth
+
