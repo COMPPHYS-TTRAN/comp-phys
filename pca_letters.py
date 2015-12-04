@@ -17,8 +17,10 @@ from __future__ import print_function, division #refers to python3
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import argparse
 from sklearn.decomposition import PCA
 from scipy.interpolate import interp2d
+
 
 #edge_pix dictionary; key = letter, value = amount to crop AKA edge_pix
 #epd = {'A': 138, 'B': 130, 'C': 129, 'D': 140, 'E': 120, 'F': 113, 'G': 146, 'H': 146, 'I': 146, 'J': 86, 'K': 127, 'L': 100, 'M': 160, 'N': 140, 'O': 155, 'P': 126, 'Q': 155, 'R': 131, 'S': 114, 'T': 121, 'U': 135, 'V': 137, 'W': 210, 'X': 127, 'Y': 120, 'Z': 115}             
@@ -100,7 +102,7 @@ def alphabet_pca(X_arr, n_comp = 5): #should eventually let n_comp be determined
     
     return pca, Xproj, pca_comps
 
-pca, Xproj, pca_comps = alphabet_pca(X_arr)
+#pca, Xproj, pca_comps = alphabet_pca(X_arr, n_comp = n_comp)
 
 def show_pca_im(Xproj, pca_comps, n_comp = 5, dim = 16, let_idx = 0): #should eventually let n_comp be determined by argparse
     #needs to display eigenimages and PCA constructed image (number of eigenimages depends on n_comp)
@@ -121,4 +123,18 @@ def show_pca_im(Xproj, pca_comps, n_comp = 5, dim = 16, let_idx = 0): #should ev
     ax.grid(False)
     plt.show()
     
-show_pca_im(Xproj, pca_comps)
+#show_pca_im(Xproj, pca_comps, n_comp = n_comp, let_idx = let_idx)
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-let_idx', type=int)
+    parser.add_argument('-n_comp', type=int)
+    args = parser.parse_args()
+
+    let_idx = args.let_idx
+    n_comp = args.n_comp
+
+pca, Xproj, pca_comps = alphabet_pca(X_arr, n_comp = n_comp)
+show_pca_im(Xproj, pca_comps, n_comp = n_comp, let_idx = let_idx)
